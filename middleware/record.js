@@ -12,9 +12,8 @@ module.exports = ({target, dir}) => {
       .on('data', chunk => response += chunk)
       .on('end', () => {
         const filename = resolve(req, dir),
-              {headers} = proxyRes,
-              body = JSON.parse(response);
-        write(filename, headers, body);
+              {headers} = proxyRes;
+        write(filename, headers, response);
       });
   });
 

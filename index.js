@@ -18,6 +18,7 @@ const argsMap = {
 const app = express(),
       handler = args.target ? record : replay;
 
+app.disable('x-powered-by');
 app.use(fingerprint);
 app.use(handler(args));
 app.listen(args.port, () => console.log(`listening on port ${args.port}`));

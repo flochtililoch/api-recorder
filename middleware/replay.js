@@ -6,9 +6,15 @@ const resolve = require('../lib/resolve'),
 module.exports = ({dir}) => {
   return (req, res) => {
     const path = resolve(req, dir);
-    read(path, ({headers, body}) => {
-      res.set(headers);
-      res.json(body);
+    read(path, result => {
+      const {headers, body} = result;
+      if (headers) {
+        res.set(headers);
+      }
+      if (body) {
+        res.json(body);
+      }
+      res.end();
     });
   };
 };
