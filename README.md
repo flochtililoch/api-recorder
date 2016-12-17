@@ -1,5 +1,5 @@
 # HTTP JSON API Recorder
-*Record API responses and replay them offline.*
+*Record API responses and replay them offline. Useful for UI testing setups.*
 
 Runs a proxy server that acts in two modes:
 - recording mode: stores every responses of target API to specified directory.
@@ -11,22 +11,55 @@ Runs a proxy server that acts in two modes:
 $ npm install api-recorder -g
 ```
 
-## Usage
+## Configuration
 
-```sh
-$ api-recorder -p=3000 -d=~/Desktop/my_api -t=http://my.api:1234
+```json
+{
+  "port": 3000,
+  "directory": "~/offline_data",
+  "target": "http://my.api.local:8080",
+  "fingerprint": [
+    "method",
+    "url",
+    "query",
+    "body",
+    {
+      "headers": [
+        "user-agent",
+        "accept-language",
+        "host"
+      ]
+    }
+  ]
+}
 ```
 
-You can then configure your application to point to the proxy.
+### `port` *Integer*
+Port used by the proxy.
 
-**Arguments**
-- **`-p`, `--port`:** Port the proxy will use.
-- **`-d`, `--directory`:** Directory where recorded responses should be written / read.
-- **`-t`, `--target`:** Optional. When defined, the proxy reaches out to the real API and records it to specified `directory`. When not defined, the proxy simply returns the responses from the specified `directory`.
+### `directory` *String*
+Directory to write to / read from API responses.
+
+### `target` *String*
+Real server hosting the API to record.
+
+### `fingerprint` *Array*
+List of keys from the `request` object to use to "fingerprint" the request. Can be specifed as an object when reading request object properties (for example `headers`).
+
+
+## Record API responses
+```sh
+$ api-recorder -c=/path/to/config.json
+```
+
+## Replay API responses (offline mode)
+```sh
+$ api-recorder -c=/path/to/config.json --offline
+```
 
 ## TODO
 
-- tests
-- support non-JSON APIs
-- allow request fingerprinting customization
-- allow responses delaying by configuration
+- [x] allow request fingerprinting customization
+- [ ] allow responses delaying by configuration
+- [ ] tests
+- [ ] support non-JSON APIs

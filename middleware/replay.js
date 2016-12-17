@@ -1,11 +1,11 @@
 'use strict';
 
-const resolve = require('../lib/resolve'),
+const {resolveRequestPath} = require('../lib/resolve'),
       read = require('../lib/read');
 
-module.exports = ({dir}) => {
+module.exports = ({directory}) => {
   return (req, res) => {
-    const path = resolve(req, dir);
+    const path = resolveRequestPath(req, directory);
     read(path, result => {
       const {headers, body} = result;
       if (headers) {

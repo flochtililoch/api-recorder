@@ -3,24 +3,27 @@
 'use strict';
 
 const express = require('express'),
-      fingerprint = require('./middleware/fingerprint'),
-      record = require('./middleware/record'),
-      replay = require('./middleware/replay'),
-      log = require('./middleware/log'),
-      {processArgv} = require('./lib/cli');
+  bodyParser = require('body-parser'),
+  fingerprint = require('./middleware/fingerprint'),
+  record = require('./middleware/record'),
+  replay = require('./middleware/replay'),
+  log = require('./middleware/log'),
+  {processArgv} = require('./lib/cli'),
+  {resolvePath} = require('./lib/resolve');
 
 const argsMap = {
-        port: ['-p', '--port'],
-        dir: ['-d', '--dir'],
-        target: ['-t', '--target'],
-      },
-      args = processArgv(argsMap);
+    config: ['-c', '--config'],
+    offline: ['-o', '--offline'],
+  },
+  args = processArgv(argsMap),
+  config = require(resolvePath(args.config));
 
 const app = express(),
-      handler = args.target ? record : replay;
+  handler = args.offline ? replay : record;
 
 app.disable('x-powered-by');
-app.use(fingerprint);
+app.use(bodyParser.json());
+app.use(fingerprint(config.fingerprint));
 app.use(log);
-app.use(handler(args));
-app.listen(args.port, () => console.log(`listening on port ${args.port}`));
+app.use(handler(config));
+app.listen(config.port, () => console.log(`listening on port ${config.port}`));
