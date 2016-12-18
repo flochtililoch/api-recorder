@@ -14,9 +14,16 @@ const express = require('express'),
 const argsMap = {
     config: ['-c', '--config'],
     offline: ['-o', '--offline'],
+    port: ['-p', '--port'],
+    target: ['-t', '--target'],
+    directory: ['-d', '--directory'],
   },
   args = processArgv(argsMap),
-  config = require(resolvePath(args.config));
+  config = Object.assign(
+    {},
+    require(resolvePath(args.config)),
+    args
+  );
 
 const app = express(),
   handler = args.offline ? replay : record;
