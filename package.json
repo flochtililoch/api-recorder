@@ -4,7 +4,7 @@
   "description": "HTTP JSON API Recorder. Record API responses and replay them offline.",
   "main": "index.js",
   "bin": {
-    "api-recorder": "./index.js"
+    "api-recorder": "./bin/api-recorder.js"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
