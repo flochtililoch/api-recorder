@@ -46,15 +46,35 @@ Real server hosting the API to record.
 ### `fingerprint` *Array*
 List of keys from the `request` object to use to "fingerprint" the request. Can be specifed as an object when reading request object properties (for example `headers`).
 
+## Usage
 
-## Record API responses
+### CLI
+
+#### Record API responses
 ```sh
 $ api-recorder -c=/path/to/config.json
 ```
 
-## Replay API responses (offline mode)
+#### Replay API responses (offline mode)
 ```sh
 $ api-recorder -c=/path/to/config.json --offline
+```
+
+### Node API
+
+```javascript
+const apiRecorder = require('api-recorder');
+
+// Initialize and start HTTP service
+const service = apiRecorder({
+  config: '/path/to/config.json',
+  directory: '/path/to/directory',
+  offline: false // or true
+});
+
+// Some code that pulls data from the service
+
+service.close(); // Close HTTP service
 ```
 
 ## TODO

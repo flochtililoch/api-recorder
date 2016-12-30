@@ -1,6 +1,6 @@
 {
   "name": "api-recorder",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "HTTP JSON API Recorder. Record API responses and replay them offline.",
   "main": "index.js",
   "bin": {
@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
     "test": "./node_modules/.bin/mocha *.test.js **/*.test.js",
+    "preversion": "npm run lint",
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
     "minor-release": "npm version minor && npm publish && git push --follow-tags",
     "major-release": "npm version major && npm publish && git push --follow-tags"
