@@ -6,7 +6,8 @@ const express = require('express'),
   record = require('./middleware/record'),
   replay = require('./middleware/replay'),
   log = require('./middleware/log'),
-  {resolvePath} = require('./lib/resolve');
+  {resolvePath} = require('./lib/resolve'),
+  {serviceStarted} = require('./lib/log');
 
 module.exports = args => {
   const config = Object.assign(
@@ -16,12 +17,12 @@ module.exports = args => {
   );
 
   const app = express(),
-    handler = args.offline ? replay : record;
+    handler = config.offline ? replay : record;
 
   app.disable('x-powered-by');
   app.use(bodyParser.json());
   app.use(fingerprint(config.fingerprint));
-  app.use(log);
+  app.use(log(config));
   app.use(handler(config));
-  return app.listen(config.port, () => console.log(`listening on port ${config.port}`));
+  return app.listen(config.port, serviceStarted(config));
 };
