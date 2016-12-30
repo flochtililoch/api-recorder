@@ -62,7 +62,7 @@ $ api-recorder -c=/path/to/config.json --offline
 
 ### Node API
 
-```javacript
+```javascript
 const apiRecorder = require('api-recorder');
 
 // Initialize and start HTTP service
