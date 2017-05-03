@@ -1,6 +1,6 @@
 {
   "name": "api-recorder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "HTTP JSON API Recorder. Record API responses and replay them offline.",
   "main": "index.js",
   "bin": {
