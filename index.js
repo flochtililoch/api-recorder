@@ -22,7 +22,8 @@ module.exports = args => {
   app.disable('x-powered-by');
   app.use(bodyParser.json());
   app.use(fingerprint(config.fingerprint));
-  app.use(log(config));
+  if (!config.offline) app.use(log(config));
   app.use(handler(config));
+  if (config.offline) app.use(log(config));
   return app.listen(config.port, serviceStarted(config));
 };
