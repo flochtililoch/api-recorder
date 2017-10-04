@@ -7,7 +7,12 @@ module.exports = config => {
     // For now, just allow disable logging from config.
     // Might add more options in the future.
     if (config.log !== false) {
-      const out = `[${req.id.magenta}] ${req.method.cyan} ${req.path.yellow}`;
+      const out = `
+  ${'id'.magenta}: ${req.id.yellow}
+  ${'method'.magenta}: ${req.method.yellow}
+  ${'path'.magenta}: ${req.path.yellow}
+  ${'status'.magenta}: ${res.statusCode.toString().yellow}
+      `;
       console.log(out);
     }
     next();

@@ -4,10 +4,13 @@ const {resolveRequestPath} = require('../lib/resolve'),
       read = require('../lib/read');
 
 module.exports = ({directory}) => {
-  return (req, res) => {
+  return (req, res, next) => {
     const path = resolveRequestPath(req, directory);
     read(path, result => {
-      const {headers, body} = result;
+      const {status, headers, body} = result;
+      if (status) {
+        res.status(status.status);
+      }
       if (headers) {
         res.set(headers);
       }
@@ -15,6 +18,7 @@ module.exports = ({directory}) => {
         res.json(body);
       }
       res.end();
+      next();
     });
   };
 };

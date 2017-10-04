@@ -26,8 +26,9 @@ module.exports = ({target, directory, restream}) => {
       .on('data', chunk => response += chunk)
       .on('end', () => {
         const filename = resolveRequestPath(req, directory),
-              {headers} = proxyRes;
-        write(filename, headers, response);
+              {headers} = proxyRes,
+              status = {status: proxyRes.statusCode};
+        write(filename, status, headers, response);
       });
   });
 
