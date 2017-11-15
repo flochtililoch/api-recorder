@@ -5,11 +5,13 @@ const {createProxyServer} = require('http-proxy'),
       {URL} = require('url'),
       write = require('../lib/write');
 
-module.exports = ({target, directory, restream, removeHeaders}) => {
+module.exports = (config) => {
+  const {target, directory, restream, addHeaders, removeHeaders} = config;
   const url = new URL(target);
   const proxy = createProxyServer({target, secure: false});
   proxy.on('proxyReq', (proxyReq, req) => {
     proxyReq.setHeader('Host', url.host);
+    (Object.keys(addHeaders || [])).forEach(header => proxyReq.setHeader(header, addHeaders[header]));
     (removeHeaders || []).forEach(header => proxyReq.removeHeader(header));
     // https://github.com/nodejitsu/node-http-proxy/issues/180
     // https://github.com/nodejitsu/node-http-proxy/blob/d0e000e1f91a969f1711eb3be7d1acb16c4538df/examples/middleware/bodyDecoder-middleware.js#L37-L47
