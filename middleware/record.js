@@ -2,15 +2,12 @@
 
 const {createProxyServer} = require('http-proxy'),
       {resolveRequestPath} = require('../lib/resolve'),
-      {URL} = require('url'),
       write = require('../lib/write');
 
 module.exports = (config) => {
   const {target, directory, restream, addHeaders, removeHeaders} = config;
-  const url = new URL(target);
   const proxy = createProxyServer({target, secure: false});
   proxy.on('proxyReq', (proxyReq, req) => {
-    proxyReq.setHeader('Host', url.host);
     (Object.keys(addHeaders || [])).forEach(header => proxyReq.setHeader(header, addHeaders[header]));
     (removeHeaders || []).forEach(header => proxyReq.removeHeader(header));
     // https://github.com/nodejitsu/node-http-proxy/issues/180
