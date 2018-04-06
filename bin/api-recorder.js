@@ -7,6 +7,7 @@ const apiRecorder = require('../'),
   argsMap = {
     config: ['-c', '--config'],
     offline: ['-o', '--offline'],
+    autofix: ['-a', '--autofix'],
     port: ['-p', '--port'],
     target: ['-t', '--target'],
     directory: ['-d', '--directory'],
