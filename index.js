@@ -24,6 +24,5 @@ module.exports = args => {
   app.use(log(config));
   app.use(replay(config));
   app.use(record(config));
-  app.use(log(config));
   return app.listen(config.port, serviceStarted(config));
 };
