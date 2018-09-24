@@ -27,8 +27,14 @@ module.exports = (config) => {
       .on('end', () => {
         const filename = resolveRequestPath(req, directory),
               {headers} = proxyRes,
-              status = {status: proxyRes.statusCode};
-        write(filename, status, headers, response);
+              status = {status: proxyRes.statusCode},
+              {fingerprint} = req,
+              request = {
+                method: req.method,
+                url: req.url,
+                headers: req.headers,
+              };
+        write(filename, status, headers, response, fingerprint, request);
       });
   });
 
