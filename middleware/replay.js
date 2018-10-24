@@ -1,11 +1,30 @@
 'use strict';
 
-const {resolveRequestPath} = require('../lib/resolve'),
-      read = require('../lib/read');
+require('colors');
 
-module.exports = ({directory}) => {
+const {requestsIdsIndexes, resolveRequestPath} = require('../lib/resolve'),
+      read = require('../lib/read'),
+      fs = require('fs');
+
+module.exports = ({directory, offline, autofix}) => {
   return (req, res, next) => {
-    const path = resolveRequestPath(req, directory);
+    if (!offline) {
+      next();
+      return;
+    }
+    let path = resolveRequestPath(req, directory);
+    console.log(`Request resolving to ${path.cyan}`);
+    if (!fs.existsSync(path)) {
+      if (offline && autofix) {
+        requestsIdsIndexes[req.id] -= 1;
+        console.log('Path not found, will query real service'.yellow);
+        next();
+      } else {
+        console.log('Path not found'.red);
+        res.end();
+      }
+      return;
+    }
     read(path, result => {
       const {status, headers, body} = result;
       if (status) {
@@ -18,7 +37,6 @@ module.exports = ({directory}) => {
         res.json(body);
       }
       res.end();
-      next();
     });
   };
 };

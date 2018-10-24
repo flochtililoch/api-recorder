@@ -60,6 +60,11 @@ $ api-recorder -c=/path/to/config.json
 $ api-recorder -c=/path/to/config.json --offline
 ```
 
+#### Replay API responses that are already recorded, record others
+```sh
+$ api-recorder -c=/path/to/config.json --offline --autofix
+```
+
 ### Node API
 
 ```javascript

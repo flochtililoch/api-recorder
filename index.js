@@ -16,18 +16,13 @@ module.exports = args => {
     args
   );
 
-  const app = express(),
-    handler = config.offline ? replay : record;
+  const app = express();
 
   app.disable('x-powered-by');
   app.use(bodyParser.json());
   app.use(fingerprint(config.fingerprint));
-  if (!config.offline) {
-    app.use(log(config));
-  }
-  app.use(handler(config));
-  if (config.offline) {
-    app.use(log(config));
-  }
+  app.use(log(config));
+  app.use(replay(config));
+  app.use(record(config));
   return app.listen(config.port, serviceStarted(config));
 };

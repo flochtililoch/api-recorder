@@ -8,10 +8,11 @@ module.exports = config => {
     // Might add more options in the future.
     if (config.log !== false) {
       const out = `
-  ${'id'.magenta}: ${req.id.yellow}
-  ${'method'.magenta}: ${req.method.yellow}
-  ${'path'.magenta}: ${req.path.yellow}
-  ${'status'.magenta}: ${res.statusCode.toString().yellow}
+Request:
+  ${'id'.magenta}: ${req.id.cyan}
+  ${'method'.magenta}: ${req.method.cyan}
+  ${'path'.magenta}: ${req.path.cyan}
+  ${'status'.magenta}: ${res.statusCode.toString().cyan}
       `;
       console.log(out);
     }
